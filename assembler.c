@@ -114,13 +114,14 @@ int main(int argc, char* argv[]) {
                   &lOpcode, &lArg1, &lArg2, &lArg3, &lArg4 );
           lNum++;
         }
-        if(currAddr > 65535){
-          printf("Error: Not enough memory to store program");
+        
+        lNum++;    
+        if(currAddr > 65535 && strcmp(lOpcode, ".end") != 0){
+          printf("Error: Not enough memory to store program (line %d)\n", lNum);
           exit(4);
         }
         lRet = readAndParse(infile, lLine, &lLabel,
                 &lOpcode, &lArg1, &lArg2, &lArg3, &lArg4 );    
-        lNum++;    
 
         if( lRet != DONE && lRet != EMPTY_LINE )
         {
@@ -151,6 +152,12 @@ int main(int argc, char* argv[]) {
                 }
               }
               
+              //Check for unknown opcode (non-opcode on its own line)
+              if(strcmp(lOpcode, "") == 0){
+                printf("Error: Unknown opcode (line %d)\n", lNum);
+                exit(2);
+              }
+
               if(addSymbol(lLabel, currAddr) == -1){
                 printf("Error: Duplicate label (line %d)\n", lNum);
                 exit(4);
