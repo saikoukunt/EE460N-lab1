@@ -142,6 +142,14 @@ int main(int argc, char* argv[]) {
                 printf("Error: Label cannot begin with a number or 'x' (line %d)\n", lNum);
                 exit(4);
               }
+
+              //Check if label is register
+              for(int i = 0; i < 8; i++){
+                if(strcmp(lLabel, registers[i]) == 0){
+                  printf("Error: Label cannot be a register (line %d)\n", lNum);
+                  exit(4);
+                }
+              }
               
               if(addSymbol(lLabel, currAddr) == -1){
                 printf("Error: Duplicate label (line %d)\n", lNum);
